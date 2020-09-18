@@ -35,4 +35,3 @@ const RootQuery = new GraphQLObjectType({
 });
 
 module.exports = new GraphQLSchema({ query: RootQuery });
-// mongodb+srv://dmitriy:MongoTest1!@taskmaster.mamfs.mongodb.net/languagelibrary?retryWrites=true&w=majority
