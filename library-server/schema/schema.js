@@ -11,7 +11,7 @@ let languageData = [
 
 const LanguageType = new GraphQLObjectType({
   name: "Language",
-  field: () => ({
+  fields: () => ({
     // language types
     id: { type: GraphQLString },
     name: { type: GraphQLString },
@@ -21,13 +21,11 @@ const LanguageType = new GraphQLObjectType({
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
-  field: {
+  fields: {
     // root query types
     language: {
       type: LanguageType,
-      args: {
-        id: { type: GraphQLString },
-      },
+      args: { id: { type: GraphQLString } },
       resolve(parent, args) {
         // code to get data from db
         return _.find(languageData, { id: args.id });
