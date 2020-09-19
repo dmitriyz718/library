@@ -11,7 +11,7 @@ const {
 } = graphql;
 
 // dummy data
-let languageData = [
+/* let languageData = [
   { name: "Data Objects", genre: "classes", id: "1", languageID: "1" },
   {
     name: "Object Oriented Programming",
@@ -33,7 +33,7 @@ let languages = [
   { name: "Javascript", id: "1" },
   { name: "C++", id: "2" },
   { name: "React", id: "3" },
-];
+]; */
 const TrainingType = new GraphQLObjectType({
   name: "TrainingType",
   fields: () => ({
@@ -45,7 +45,7 @@ const TrainingType = new GraphQLObjectType({
     whichlanguage: {
       type: LanguageType,
       resolve(parent, args) {
-        return _.find(languages, { id: parent.languageID });
+        /* return _.find(languages, { id: parent.languageID }); */
       },
     },
   }),
@@ -59,7 +59,7 @@ const LanguageType = new GraphQLObjectType({
     tutorials: {
       type: new GraphQLList(TrainingType),
       resolve(parent, args) {
-        return _.filter(languageData, { languageID: parent.id });
+        /* return _.filter(languageData, { languageID: parent.id }); */
       },
     },
   }),
@@ -74,7 +74,7 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         // code to get data from db
-        return _.find(languageData, { id: args.id });
+        /* return _.find(languageData, { id: args.id }); */
       },
     },
     // query for languages
@@ -82,19 +82,19 @@ const RootQuery = new GraphQLObjectType({
       type: LanguageType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(languages, { id: args.id });
+        /* return _.find(languages, { id: args.id }); */
       },
     },
     allTutorials: {
       type: new GraphQLList(TrainingType),
       resolve(parent, args) {
-        return languageData;
+        /* return languageData; */
       },
     },
     allLanguages: {
       type: new GraphQLList(LanguageType),
       resolve(parent, args) {
-        return languages;
+        /* return languages; */
       },
     },
   },
