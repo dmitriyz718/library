@@ -6,26 +6,38 @@ const {
   GraphQLSchema,
   GraphQLID,
   GraphQLInt,
+  GraphQLList,
 } = graphql;
 
 // dummy data
 let languageData = [
-  { name: "Basics", genre: "classes", id: "1", languageID: "1" },
-  { name: "Intermediate", genre: "front end", id: "2", languageID: "1" },
-  { name: "Advanced", genre: "back end", id: "3", languageID: "2" },
-  { name: "Beginner", genre: "classes", id: "4", languageID: "2" },
-  { name: "Medium", genre: "front end", id: "5", languageID: "3" },
-  { name: "Expert", genre: "back end", id: "6", languageID: "3" },
+  { name: "Data Objects", genre: "classes", id: "1", languageID: "1" },
+  {
+    name: "Object Oriented Programming",
+    genre: "front end",
+    id: "2",
+    languageID: "1",
+  },
+  { name: "Advanced Mutations", genre: "back end", id: "3", languageID: "2" },
+  { name: "NodeJS", genre: "classes", id: "4", languageID: "2" },
+  {
+    name: "GraphQL for Beginners",
+    genre: "front end",
+    id: "5",
+    languageID: "3",
+  },
+  { name: "Control Flow", genre: "back end", id: "6", languageID: "3" },
 ];
 let languages = [
-  { name: "Javascript", version: 121, id: "1" },
-  { name: "C++", version: 13, id: "2" },
-  { name: "React", version: 21, id: "3" },
+  { name: "Javascript", id: "1" },
+  { name: "C++", id: "2" },
+  { name: "React", id: "3" },
 ];
 const TrainingType = new GraphQLObjectType({
   name: "TrainingType",
   fields: () => ({
-    // language types
+    /* we use functions to wrap this into so that it only executes when called on and we do not get errors when code reads top to bottom */
+    // videos tutorials and training
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
@@ -43,14 +55,19 @@ const LanguageType = new GraphQLObjectType({
     // language types
     id: { type: GraphQLID },
     name: { type: GraphQLString },
-    version: { type: GraphQLInt },
+    tutorials: {
+      type: new GraphQLList(TrainingType),
+      resolve(parent, args) {
+        return _.filter(languageData, { languageID: parent.id });
+      },
+    },
   }),
 });
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
-    // root query types
+    // root query for all tutorials, vids, etc
     languageTraining: {
       type: TrainingType,
       args: { id: { type: GraphQLID } },
@@ -59,11 +76,24 @@ const RootQuery = new GraphQLObjectType({
         return _.find(languageData, { id: args.id });
       },
     },
+    // query for languages
     whichLanguage: {
       type: LanguageType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         return _.find(languages, { id: args.id });
+      },
+    },
+    allTutorials: {
+      type: new GraphQLList(TrainingType),
+      resolve(parent, args) {
+        return languageData;
+      },
+    },
+    allLanguages: {
+      type: new GraphQLList(LanguageType),
+      resolve(parent, args) {
+        return languages;
       },
     },
   },
