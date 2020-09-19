@@ -3,8 +3,6 @@ const Schema = mongoose.Schema;
 
 const LanguageSchema = new Schema({
   name: String,
-  genre: String,
-  languageID: String,
 });
-const Tutorial = new mongoose.model("Tutorial", TutorialSchema);
-module.exports = Tutorial;
+const Language = new mongoose.model("Language", LanguageSchema);
+module.exports = Language;
