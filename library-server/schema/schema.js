@@ -1,21 +1,40 @@
 const graphql = require("graphql");
 const _ = require("lodash");
-const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLID,
+  GraphQLInt,
+} = graphql;
 
 // dummy data
 let languageData = [
-  { name: "Javascript", genre: "web development", id: "1" },
-  { name: "Python", genre: "front and backend", id: "2" },
-  { name: "C", genre: "backend", id: "3" },
+  { name: "Javascript", genre: "classes", id: "1" },
+  { name: "Javascript", genre: "front end", id: "2" },
+  { name: "Javascript", genre: "back end", id: "3" },
 ];
-
-const LanguageType = new GraphQLObjectType({
-  name: "Language",
+let languages = [
+  { name: "Javascript", version: 121, id: "1" },
+  { name: "C++", version: 13, id: "2" },
+  { name: "React", version: 21, id: "3" },
+];
+const TrainingType = new GraphQLObjectType({
+  name: "TrainingType",
   fields: () => ({
     // language types
-    id: { type: GraphQLString },
+    id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+  }),
+});
+const LanguageType = new GraphQLObjectType({
+  name: "LanguageType",
+  fields: () => ({
+    // language types
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    version: { type: GraphQLInt },
   }),
 });
 
@@ -23,12 +42,19 @@ const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
     // root query types
-    language: {
-      type: LanguageType,
-      args: { id: { type: GraphQLString } },
+    languageTraining: {
+      type: TrainingType,
+      args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         // code to get data from db
         return _.find(languageData, { id: args.id });
+      },
+    },
+    whichLanguage: {
+      type: LanguageType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return _.find(languages, { id: args.id });
       },
     },
   },
