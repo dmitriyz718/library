@@ -1,4 +1,5 @@
 const graphql = require("graphql");
+require("dotenv").config();
 const _ = require("lodash");
 const {
   GraphQLObjectType,
