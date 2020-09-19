@@ -10,9 +10,12 @@ const {
 
 // dummy data
 let languageData = [
-  { name: "Javascript", genre: "classes", id: "1" },
-  { name: "Javascript", genre: "front end", id: "2" },
-  { name: "Javascript", genre: "back end", id: "3" },
+  { name: "Basics", genre: "classes", id: "1", languageID: "1" },
+  { name: "Intermediate", genre: "front end", id: "2", languageID: "1" },
+  { name: "Advanced", genre: "back end", id: "3", languageID: "2" },
+  { name: "Beginner", genre: "classes", id: "4", languageID: "2" },
+  { name: "Medium", genre: "front end", id: "5", languageID: "3" },
+  { name: "Expert", genre: "back end", id: "6", languageID: "3" },
 ];
 let languages = [
   { name: "Javascript", version: 121, id: "1" },
@@ -26,6 +29,12 @@ const TrainingType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+    whichlanguage: {
+      type: LanguageType,
+      resolve(parent, args) {
+        return _.find(languages, { id: parent.languageID });
+      },
+    },
   }),
 });
 const LanguageType = new GraphQLObjectType({
