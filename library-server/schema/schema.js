@@ -1,4 +1,6 @@
 const graphql = require("graphql");
+const Tutorial = require("../models/Tutorial");
+const Language = require("../models/Language");
 require("dotenv").config();
 const _ = require("lodash");
 const {
@@ -99,5 +101,20 @@ const RootQuery = new GraphQLObjectType({
     },
   },
 });
+const Mutation = new GraphQLObjectType({
+  name: "Mutation",
+  fields: {
+    addLanguage: {
+      type: LanguageType,
+      args: { name: { type: GraphQLString } },
+      resolve(parent, args) {
+        const language = new Language({
+          name: args.name,
+        });
+        return language.save();
+      },
+    },
+  },
+});
 
-module.exports = new GraphQLSchema({ query: RootQuery });
+module.exports = new GraphQLSchema({ query: RootQuery, mutation: Mutation });
