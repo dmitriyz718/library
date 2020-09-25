@@ -5,7 +5,7 @@ const TutorialSchema = new Schema({
   name: String,
   genre: String,
   link: String,
-  languageID: String,
+  languageId: String,
   dateAdded: {
     type: Date,
     default: Date.now,
