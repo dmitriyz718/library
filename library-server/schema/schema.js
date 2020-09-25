@@ -45,10 +45,11 @@ const TrainingType = new GraphQLObjectType({
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
     link: { type: GraphQLString },
-    languageID: {
+    whichLanguage: {
       type: LanguageType,
       resolve(parent, args) {
         /* return _.find(languages, { id: parent.languageID }); */
+        return Tutorial.findById(parent.languageID);
       },
     },
   }),
@@ -63,6 +64,7 @@ const LanguageType = new GraphQLObjectType({
       type: new GraphQLList(TrainingType),
       resolve(parent, args) {
         /* return _.filter(languageData, { languageID: parent.id }); */
+        return Language.findById({ languageID: parent.id });
       },
     },
   }),
@@ -78,6 +80,7 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args) {
         // code to get data from db
         /* return _.find(languageData, { id: args.id }); */
+        return Tutorial.findById(args.id);
       },
     },
     // query for languages
@@ -86,18 +89,21 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         /* return _.find(languages, { id: args.id }); */
+        return Language.findById(args.id);
       },
     },
     allTutorials: {
       type: new GraphQLList(TrainingType),
       resolve(parent, args) {
         /* return languageData; */
+        return Tutorial.find({});
       },
     },
     allLanguages: {
       type: new GraphQLList(LanguageType),
       resolve(parent, args) {
         /* return languages; */
+        return Language.find({});
       },
     },
   },
