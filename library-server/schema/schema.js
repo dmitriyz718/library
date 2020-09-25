@@ -44,7 +44,8 @@ const TrainingType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
-    whichlanguage: {
+    link: { type: GraphQLString },
+    languageID: {
       type: LanguageType,
       resolve(parent, args) {
         /* return _.find(languages, { id: parent.languageID }); */
@@ -112,6 +113,24 @@ const Mutation = new GraphQLObjectType({
           name: args.name,
         });
         return language.save();
+      },
+    },
+    addTutorial: {
+      type: TrainingType,
+      args: {
+        name: { type: GraphQLString },
+        genre: { type: GraphQLString },
+        link: { type: GraphQLString },
+        languageID: { type: GraphQLString },
+      },
+      resolve(parent, args) {
+        const tutorial = new Tutorial({
+          name: args.name,
+          genre: args.genre,
+          link: args.link,
+          languageID: args.languageID,
+        });
+        return tutorial.save();
       },
     },
   },

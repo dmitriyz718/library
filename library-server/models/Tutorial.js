@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const TutorialSchema = new Schema({
   name: String,
   genre: String,
+  link: String,
   languageID: String,
   dateAdded: {
     type: Date,
