@@ -12,30 +12,6 @@ const {
   GraphQLList,
 } = graphql;
 
-// dummy data
-/* let languageData = [
-  { name: "Data Objects", genre: "classes", id: "1", languageID: "1" },
-  {
-    name: "Object Oriented Programming",
-    genre: "front end",
-    id: "2",
-    languageID: "1",
-  },
-  { name: "Advanced Mutations", genre: "back end", id: "3", languageID: "2" },
-  { name: "NodeJS", genre: "classes", id: "4", languageID: "2" },
-  {
-    name: "GraphQL for Beginners",
-    genre: "front end",
-    id: "5",
-    languageID: "3",
-  },
-  { name: "Control Flow", genre: "back end", id: "6", languageID: "3" },
-];
-let languages = [
-  { name: "Javascript", id: "1" },
-  { name: "C++", id: "2" },
-  { name: "React", id: "3" },
-]; */
 const TrainingType = new GraphQLObjectType({
   name: "TrainingType",
   fields: () => ({
@@ -49,7 +25,6 @@ const TrainingType = new GraphQLObjectType({
     whichLanguage: {
       type: LanguageType,
       resolve(parent, args) {
-        /* return _.find(languages, { id: parent.languageID }); */
         return Tutorial.findById(parent.languageID);
       },
     },
@@ -64,7 +39,6 @@ const LanguageType = new GraphQLObjectType({
     tutorials: {
       type: new GraphQLList(TrainingType),
       resolve(parent, args) {
-        /* return _.filter(languageData, { languageID: parent.id }); */
         return Language.findById({ languageID: parent.id });
       },
     },
@@ -80,7 +54,7 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         // code to get data from db
-        /* return _.find(languageData, { id: args.id }); */
+
         return Tutorial.findById(args.id);
       },
     },
@@ -89,21 +63,18 @@ const RootQuery = new GraphQLObjectType({
       type: LanguageType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        /* return _.find(languages, { id: args.id }); */
         return Language.findById(args.id);
       },
     },
     allTutorials: {
       type: new GraphQLList(TrainingType),
       resolve(parent, args) {
-        /* return languageData; */
         return Tutorial.find({});
       },
     },
     allLanguages: {
       type: new GraphQLList(LanguageType),
       resolve(parent, args) {
-        /* return languages; */
         return Language.find({});
       },
     },
