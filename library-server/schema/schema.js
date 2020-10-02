@@ -25,7 +25,7 @@ const TrainingType = new GraphQLObjectType({
     whichLanguage: {
       type: LanguageType,
       resolve(parent, args) {
-        return Tutorial.findById(parent.languageID);
+        return Language.findById(parent.languageId);
       },
     },
   }),
@@ -63,7 +63,7 @@ const RootQuery = new GraphQLObjectType({
       type: LanguageType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return Language.findById(args.id);
+        return Language.findById(parent.id);
       },
     },
     allTutorials: {
