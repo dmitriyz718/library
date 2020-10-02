@@ -10,6 +10,7 @@ const {
   GraphQLID,
   GraphQLInt,
   GraphQLList,
+  GraphQLNonNull,
 } = graphql;
 
 const TrainingType = new GraphQLObjectType({
@@ -39,7 +40,7 @@ const LanguageType = new GraphQLObjectType({
     tutorials: {
       type: new GraphQLList(TrainingType),
       resolve(parent, args) {
-        return Language.findById({ languageID: parent.id });
+        return Tutorial.find({ languageId: parent.id });
       },
     },
   }),
@@ -48,7 +49,7 @@ const LanguageType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
-    // root query for all tutorials, vids, etc
+    // query for a single training
     languageTraining: {
       type: TrainingType,
       args: { id: { type: GraphQLID } },
@@ -58,20 +59,22 @@ const RootQuery = new GraphQLObjectType({
         return Tutorial.findById(args.id);
       },
     },
-    // query for languages
+    // query for which language
     whichLanguage: {
       type: LanguageType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return Language.findById(parent.id);
+        return Language.findById(args.id);
       },
     },
+    // all tutorials
     allTutorials: {
       type: new GraphQLList(TrainingType),
       resolve(parent, args) {
         return Tutorial.find({});
       },
     },
+    // all languages
     allLanguages: {
       type: new GraphQLList(LanguageType),
       resolve(parent, args) {
@@ -85,7 +88,7 @@ const Mutation = new GraphQLObjectType({
   fields: {
     addLanguage: {
       type: LanguageType,
-      args: { name: { type: GraphQLString } },
+      args: { name: { type: new GraphQLNonNull(GraphQLString) } },
       resolve(parent, args) {
         const language = new Language({
           name: args.name,
@@ -96,10 +99,10 @@ const Mutation = new GraphQLObjectType({
     addTutorial: {
       type: TrainingType,
       args: {
-        name: { type: GraphQLString },
+        name: { type: new GraphQLNonNull(GraphQLString) },
         genre: { type: GraphQLString },
-        link: { type: GraphQLString },
-        languageId: { type: GraphQLString },
+        link: { type: new GraphQLNonNull(GraphQLString) },
+        languageId: { type: new GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args) {
         const tutorial = new Tutorial({
