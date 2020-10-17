@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
-import LanguageList from "./components/LanguageList";
+import TutorialList from "./components/TutorialList";
 
 // apollo set up
 const client = new ApolloClient({
@@ -13,7 +13,7 @@ class App extends Component {
       <ApolloProvider client={client}>
         <div id="main">
           <h1>Dev Library</h1>
-          <LanguageList />
+          <TutorialList />
         </div>
       </ApolloProvider>
     );
